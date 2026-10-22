@@ -1,0 +1,79 @@
+# === Build Artifacts ===
+*.apk
+*.aab
+*.dex
+*.class
+*.jar
+*.war
+*.ear
+build/
+dist/
+out/
+target/
+
+# === Android ===
+.gradle/
+local.properties
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof
+app/release/
+app/debug/
+
+# === Node.js / Backend ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+
+# === Environment & Secrets ===
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.jks
+keystore.properties
+google-services.json
+firebase-config.json
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# === Docker ===
+docker-compose.override.yml
+
+# === Test & Coverage ===
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+
+# === Logs ===
+*.log
+logs/
+
+# === Misc ===
+*.bak
+*.tmp
+*.orig
+bugreport-*.zip
