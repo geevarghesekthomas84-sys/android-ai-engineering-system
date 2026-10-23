@@ -2,9 +2,9 @@ name: PowerShell & Installer Validation
 
 on:
   push:
-    paths: ['scripts/**']
+    paths: ['scripts/**', '.github/workflows/powershell-check.yml']
   pull_request:
-    paths: ['scripts/**']
+    paths: ['scripts/**', '.github/workflows/powershell-check.yml']
   workflow_call:
   workflow_dispatch:
 

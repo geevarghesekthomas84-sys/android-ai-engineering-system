@@ -2,9 +2,9 @@ name: Backend Tests
 
 on:
   push:
-    paths: ['examples/fullstack-taskapp/backend/**']
+    paths: ['examples/fullstack-taskapp/backend/**', '.github/workflows/backend-tests.yml']
   pull_request:
-    paths: ['examples/fullstack-taskapp/backend/**']
+    paths: ['examples/fullstack-taskapp/backend/**', '.github/workflows/backend-tests.yml']
   workflow_call:
   workflow_dispatch:
 

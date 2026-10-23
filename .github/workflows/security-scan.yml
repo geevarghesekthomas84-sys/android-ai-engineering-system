@@ -54,7 +54,10 @@ jobs:
         run: |
           ERRORS=0
           echo "--- Checking for Windows user paths ---"
-          PATHS=$(grep -rn 'C:\\Users\\' --include='*.md' --include='*.ts' --include='*.kt' --include='*.yml' --include='*.ps1' --include='*.json' . || true)
+          PATHS=$(grep -rn 'C:\\Users\\' \
+            --include='*.md' --include='*.ts' --include='*.kt' \
+            --include='*.yml' --include='*.ps1' --include='*.json' \
+            skills/ scripts/ examples/ docs/ README.md CONTRIBUTING.md SECURITY.md || true)
           if [ -n "$PATHS" ]; then
             echo "::error::Hardcoded Windows paths found:"
             echo "$PATHS"
@@ -62,7 +65,9 @@ jobs:
           fi
 
           echo "--- Checking for machine identifiers ---"
-          MACHINES=$(grep -rn 'DESKTOP-\|LAPTOP-\|WORKSTATION-' . --include='*.md' --include='*.ts' --include='*.yml' --include='*.ps1' || true)
+          MACHINES=$(grep -rn 'DESKTOP-\|LAPTOP-\|WORKSTATION-' \
+            --include='*.md' --include='*.ts' --include='*.yml' --include='*.ps1' \
+            skills/ scripts/ examples/ docs/ README.md CONTRIBUTING.md SECURITY.md || true)
           if [ -n "$MACHINES" ]; then
             echo "::error::Machine identifiers found:"
             echo "$MACHINES"
