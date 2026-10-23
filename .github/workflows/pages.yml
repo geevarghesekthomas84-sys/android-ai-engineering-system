@@ -9,6 +9,7 @@ on:
       - 'CHANGELOG.md'
       - 'CONTRIBUTING.md'
       - 'SECURITY.md'
+      - '_config.yml'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
