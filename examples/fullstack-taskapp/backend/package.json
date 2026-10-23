@@ -1,7 +1,15 @@
 {
-  "name": "fullstack-demo-backend",
+  "name": "@geevarghesekthomas84-sys/fullstack-demo-backend",
   "version": "1.0.0",
-  "description": "Demo backend for Android AI Engineering System v3.0",
+  "description": "Demo backend for Android AI Engineering System v3.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system.git",
+    "directory": "examples/fullstack-taskapp/backend"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",

@@ -29,6 +29,12 @@
 
 ---
 
+<p align="center">
+  <img src="docs/demo.svg" alt="Terminal Demo" width="100%"/>
+</p>
+
+---
+
 ## What Is This?
 
 The **Android AI Engineering System** is a modular collection of AI-powered engineering skills designed for [Claude Code](https://claude.com/claude-code) and compatible AI assistants. Each skill transforms an AI into a specialized engineer — from a UI/UX designer who knows Material 3 to a security engineer who can build penetration testing labs.

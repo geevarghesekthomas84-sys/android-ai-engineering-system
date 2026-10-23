@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/discussions
+    about: Ask questions, share ideas, or show off what you've built
+  - name: Security Vulnerabilities
+    url: https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/security/policy
+    about: Report security vulnerabilities via our security policy
