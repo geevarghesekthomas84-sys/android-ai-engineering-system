@@ -5,6 +5,7 @@ on:
     paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
   pull_request:
     paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
+  workflow_call:
   workflow_dispatch:
 
 permissions:

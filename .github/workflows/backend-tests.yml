@@ -5,6 +5,7 @@ on:
     paths: ['examples/fullstack-taskapp/backend/**']
   pull_request:
     paths: ['examples/fullstack-taskapp/backend/**']
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -28,7 +29,7 @@ jobs:
           cache-dependency-path: examples/fullstack-taskapp/backend/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: TypeScript compile check
         run: npx tsc --noEmit
@@ -72,7 +73,7 @@ jobs:
           cache-dependency-path: examples/fullstack-taskapp/backend/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build

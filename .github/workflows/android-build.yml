@@ -5,6 +5,7 @@ on:
     paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**']
   pull_request:
     paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**']
+  workflow_call:
   workflow_dispatch:
 
 permissions:

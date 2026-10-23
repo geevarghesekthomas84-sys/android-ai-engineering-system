@@ -5,6 +5,7 @@ on:
     paths: ['scripts/**']
   pull_request:
     paths: ['scripts/**']
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -20,26 +21,23 @@ jobs:
       - name: Check PowerShell syntax
         shell: pwsh
         run: |
-          $errors = 0
+          $errorCount = 0
           Get-ChildItem -Path scripts/ -Filter '*.ps1' -Recurse | ForEach-Object {
             $file = $_.FullName
-            try {
-              $null = [System.Management.Automation.Language.Parser]::ParseFile(
-                $file, [ref]$null, [ref]$parseErrors
-              )
-              if ($parseErrors.Count -gt 0) {
-                Write-Host "::error::Syntax errors in $($_.Name):"
-                $parseErrors | ForEach-Object { Write-Host "  $_" }
-                $errors++
-              } else {
-                Write-Host "OK: $($_.Name)"
-              }
-            } catch {
-              Write-Host "::error::Failed to parse $($_.Name): $_"
-              $errors++
+            $tokens = $null
+            $parseErrors = $null
+            $null = [System.Management.Automation.Language.Parser]::ParseFile(
+              $file, [ref]$tokens, [ref]$parseErrors
+            )
+            if ($parseErrors.Count -gt 0) {
+              Write-Host "::error::Syntax errors in $($_.Name):"
+              $parseErrors | ForEach-Object { Write-Host "  $_" }
+              $errorCount++
+            } else {
+              Write-Host "OK: $($_.Name)"
             }
           }
-          if ($errors -gt 0) { exit 1 }
+          if ($errorCount -gt 0) { exit 1 }
           Write-Host "All PowerShell scripts pass syntax check"
 
   installer-dryrun:

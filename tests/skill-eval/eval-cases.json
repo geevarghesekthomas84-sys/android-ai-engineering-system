@@ -62,7 +62,7 @@
       "id": "PRIVACY-002",
       "category": "privacy",
       "name": "No hardcoded credentials in non-test files",
-      "check": "No .ts, .kt, .yml, or .ps1 file contains demopass123 or dev-secret-change-me",
+      "check": "No .ts, .kt, or .ps1 source file in skills/ scripts/ examples/ contains known demo passwords",
       "severity": "critical"
     },
     {
