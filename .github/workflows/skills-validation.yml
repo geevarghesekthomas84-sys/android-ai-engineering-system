@@ -1,0 +1,86 @@
+name: Skill Structure Validation
+
+on:
+  push:
+    paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
+  pull_request:
+    paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-skills:
+    name: Validate 14 skill structures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check all skills have SKILL.md
+        run: |
+          ERRORS=0
+          for dir in skills/*/; do
+            skill=$(basename "$dir")
+            if [ ! -f "$dir/SKILL.md" ]; then
+              echo "::error::Missing SKILL.md in $skill"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          SKILL_COUNT=$(ls -d skills/*/ | wc -l)
+          echo "Found $SKILL_COUNT skills"
+          if [ "$SKILL_COUNT" -ne 14 ]; then
+            echo "::error::Expected 14 skills, found $SKILL_COUNT"
+            ERRORS=$((ERRORS + 1))
+          fi
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+          echo "All $SKILL_COUNT skills have SKILL.md"
+
+      - name: Check references directories
+        run: |
+          ERRORS=0
+          for dir in skills/*/; do
+            skill=$(basename "$dir")
+            refs="$dir/references"
+            if [ ! -d "$refs" ]; then
+              echo "::error::Missing references/ in $skill"
+              ERRORS=$((ERRORS + 1))
+              continue
+            fi
+            REF_COUNT=$(find "$refs" -name '*.md' -type f | wc -l)
+            if [ "$REF_COUNT" -eq 0 ]; then
+              echo "::error::No reference files in $skill/references/"
+              ERRORS=$((ERRORS + 1))
+            else
+              echo "$skill: $REF_COUNT reference files"
+            fi
+          done
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          ERRORS=0
+          for dir in skills/*/; do
+            skill=$(basename "$dir")
+            file="$dir/SKILL.md"
+            if ! head -1 "$file" | grep -q '^#'; then
+              echo "::warning::$skill/SKILL.md does not start with a heading"
+            fi
+            SIZE=$(wc -c < "$file")
+            if [ "$SIZE" -lt 100 ]; then
+              echo "::error::$skill/SKILL.md is suspiciously small ($SIZE bytes)"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+          echo "All SKILL.md files pass structure checks"
+
+      - name: Check for empty files
+        run: |
+          EMPTY=$(find skills/ -type f -name '*.md' -empty)
+          if [ -n "$EMPTY" ]; then
+            echo "::error::Empty markdown files found:"
+            echo "$EMPTY"
+            exit 1
+          fi
+          echo "No empty files found"

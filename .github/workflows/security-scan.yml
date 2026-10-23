@@ -1,0 +1,111 @@
+name: Security & Privacy Scan
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    name: Secret and privacy scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for hardcoded credentials
+        run: |
+          ERRORS=0
+          echo "--- Checking for hardcoded passwords ---"
+          PASSWORDS=$(grep -rn 'demopass123\|dev-secret-change-me' --include='*.ts' --include='*.kt' --include='*.yml' --include='*.yaml' --include='*.json' --include='*.ps1' . || true)
+          if [ -n "$PASSWORDS" ]; then
+            echo "::error::Hardcoded credentials found:"
+            echo "$PASSWORDS"
+            ERRORS=$((ERRORS + 1))
+          fi
+
+          echo "--- Checking for API key patterns ---"
+          KEYS=$(grep -rn 'sk-[a-zA-Z0-9]\{20,\}\|AIza[a-zA-Z0-9_-]\{35\}\|ghp_[a-zA-Z0-9]\{36\}\|AKIA[0-9A-Z]\{16\}\|gho_[a-zA-Z0-9]\{36\}' . || true)
+          if [ -n "$KEYS" ]; then
+            echo "::error::Potential API keys found:"
+            echo "$KEYS"
+            ERRORS=$((ERRORS + 1))
+          fi
+
+          echo "--- Checking for .env files ---"
+          ENV_FILES=$(find . -name '.env' -not -name '.env.example' -not -path './.git/*' || true)
+          if [ -n "$ENV_FILES" ]; then
+            echo "::error::.env files found in repo:"
+            echo "$ENV_FILES"
+            ERRORS=$((ERRORS + 1))
+          fi
+
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+          echo "No hardcoded credentials or API keys found"
+
+      - name: Scan for personal information
+        run: |
+          ERRORS=0
+          echo "--- Checking for Windows user paths ---"
+          PATHS=$(grep -rn 'C:\\Users\\' --include='*.md' --include='*.ts' --include='*.kt' --include='*.yml' --include='*.ps1' --include='*.json' . || true)
+          if [ -n "$PATHS" ]; then
+            echo "::error::Hardcoded Windows paths found:"
+            echo "$PATHS"
+            ERRORS=$((ERRORS + 1))
+          fi
+
+          echo "--- Checking for machine identifiers ---"
+          MACHINES=$(grep -rn 'DESKTOP-\|LAPTOP-\|WORKSTATION-' . --include='*.md' --include='*.ts' --include='*.yml' --include='*.ps1' || true)
+          if [ -n "$MACHINES" ]; then
+            echo "::error::Machine identifiers found:"
+            echo "$MACHINES"
+            ERRORS=$((ERRORS + 1))
+          fi
+
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+          echo "No personal information found"
+
+      - name: Check for sensitive file types
+        run: |
+          SENSITIVE=$(find . -not -path './.git/*' \( \
+            -name '*.key' -o -name '*.pem' -o -name '*.p12' -o \
+            -name '*.jks' -o -name '*.keystore' -o \
+            -name '*.apk' -o -name '*.aab' -o \
+            -name 'bugreport-*.zip' \
+          \) || true)
+          if [ -n "$SENSITIVE" ]; then
+            echo "::error::Sensitive files found:"
+            echo "$SENSITIVE"
+            exit 1
+          fi
+          echo "No sensitive file types found"
+
+  dependency-audit:
+    name: npm dependency audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/fullstack-taskapp/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=critical || true
+
+      - name: Check for known critical CVEs
+        run: |
+          CRITICAL=$(npm audit --json 2>/dev/null | jq '.metadata.vulnerabilities.critical // 0')
+          echo "Critical vulnerabilities: $CRITICAL"
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "::warning::$CRITICAL critical npm vulnerabilities found"
+          fi

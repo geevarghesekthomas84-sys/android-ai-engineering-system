@@ -5,10 +5,20 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  if (!process.env.JWT_SECRET) {
+    console.error('FATAL: JWT_SECRET environment variable is required');
+    process.exit(1);
+  }
+  if (!process.env.DATABASE_URL) {
+    console.error('FATAL: DATABASE_URL environment variable is required');
+    process.exit(1);
+  }
+
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  app.enableCors({ origin: '*' });
+  // Development CORS — restrict origin in production
+  app.enableCors({ origin: process.env.CORS_ORIGIN || '*' });
 
   const config = new DocumentBuilder()
     .setTitle('FullStack Demo API')

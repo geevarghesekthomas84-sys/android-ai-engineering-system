@@ -1,0 +1,61 @@
+name: PowerShell & Installer Validation
+
+on:
+  push:
+    paths: ['scripts/**']
+  pull_request:
+    paths: ['scripts/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax-check:
+    name: PowerShell syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check PowerShell syntax
+        shell: pwsh
+        run: |
+          $errors = 0
+          Get-ChildItem -Path scripts/ -Filter '*.ps1' -Recurse | ForEach-Object {
+            $file = $_.FullName
+            try {
+              $null = [System.Management.Automation.Language.Parser]::ParseFile(
+                $file, [ref]$null, [ref]$parseErrors
+              )
+              if ($parseErrors.Count -gt 0) {
+                Write-Host "::error::Syntax errors in $($_.Name):"
+                $parseErrors | ForEach-Object { Write-Host "  $_" }
+                $errors++
+              } else {
+                Write-Host "OK: $($_.Name)"
+              }
+            } catch {
+              Write-Host "::error::Failed to parse $($_.Name): $_"
+              $errors++
+            }
+          }
+          if ($errors -gt 0) { exit 1 }
+          Write-Host "All PowerShell scripts pass syntax check"
+
+  installer-dryrun:
+    name: Installer dry-run test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run installer with -WhatIf
+        shell: pwsh
+        run: |
+          ./scripts/install.ps1 -WhatIf -Target Claude
+          Write-Host "Dry-run completed successfully"
+
+      - name: Run installer for all targets
+        shell: pwsh
+        run: |
+          ./scripts/install.ps1 -WhatIf -Target All
+          Write-Host "All-target dry-run completed"
