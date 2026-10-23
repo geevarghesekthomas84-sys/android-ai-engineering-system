@@ -3,7 +3,13 @@ description: 14 specialized AI engineering skills for professional Android devel
 theme: jekyll-theme-cayman
 exclude:
   - node_modules
-  - examples/fullstack-taskapp/backend/node_modules
+  - examples
+  - skills
+  - scripts
+  - tests
   - "*.jar"
   - "*.apk"
   - "*.aab"
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock
