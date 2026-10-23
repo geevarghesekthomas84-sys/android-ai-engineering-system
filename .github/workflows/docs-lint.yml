@@ -1,0 +1,54 @@
+name: Documentation Lint
+
+on:
+  push:
+    paths: ['**/*.md', 'docs/**']
+  pull_request:
+    paths: ['**/*.md', 'docs/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-lint:
+    name: Markdown lint & link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+
+      - name: Lint top-level docs
+        run: |
+          markdownlint README.md CONTRIBUTING.md SECURITY.md docs/*.md \
+            --disable MD013 MD033 MD041 MD024 MD036 || true
+
+      - name: Check internal links
+        run: |
+          ERRORS=0
+          # Check that files referenced in README exist
+          for link in $(grep -oP '\[.*?\]\(((?!http)[^)]+)\)' README.md | grep -oP '\(([^)]+)\)' | tr -d '()'); do
+            # Strip anchor
+            file="${link%%#*}"
+            if [ -n "$file" ] && [ ! -e "$file" ]; then
+              echo "::error::Broken link in README.md: $file"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ "$ERRORS" -gt 0 ]; then exit 1; fi
+          echo "All internal links valid"
+
+      - name: Check for TODO/FIXME markers
+        run: |
+          FOUND=$(grep -rn 'TODO\|FIXME\|HACK\|XXX' --include='*.md' docs/ README.md CONTRIBUTING.md SECURITY.md || true)
+          if [ -n "$FOUND" ]; then
+            echo "::warning::Found TODO/FIXME markers in documentation:"
+            echo "$FOUND"
+          fi

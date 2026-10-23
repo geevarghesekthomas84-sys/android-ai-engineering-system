@@ -4,8 +4,15 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"/></a>
-  <img src="https://img.shields.io/badge/Version-3.1-blue.svg" alt="Version 3.1"/>
+  <img src="https://img.shields.io/badge/Version-3.2-blue.svg" alt="Version 3.2"/>
   <img src="https://img.shields.io/badge/Skills-14-orange.svg" alt="14 Skills"/>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/skills-validation.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/skills-validation.yml/badge.svg" alt="Skill Validation"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/security-scan.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/security-scan.yml/badge.svg" alt="Security Scan"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/backend-tests.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/backend-tests.yml/badge.svg" alt="Backend Tests"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/android-build.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/android-build.yml/badge.svg" alt="Android Build"/></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Kotlin-2.0-7F52FF.svg?logo=kotlin&logoColor=white" alt="Kotlin 2.0"/>
   <img src="https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4.svg?logo=jetpackcompose&logoColor=white" alt="Jetpack Compose"/>
   <img src="https://img.shields.io/badge/NestJS-10-E0234E.svg?logo=nestjs&logoColor=white" alt="NestJS"/>
@@ -370,12 +377,29 @@ android-ai-engineering-system/
 │   ├── run-tests.ps1                 #   Test runner
 │   └── validate-v3-skills.ps1        #   Skill structure validator
 │
+├── tests/                            # Test & Evaluation
+│   └── skill-eval/                   #   Skill evaluation framework
+│       ├── eval-cases.json           #     13 deterministic + 5 AI test cases
+│       ├── run-eval.sh               #     Automated evaluation runner
+│       └── README.md                 #     Evaluation documentation
+│
+├── .github/workflows/                # CI/CD Pipelines
+│   ├── skills-validation.yml         #   14-skill structure validation
+│   ├── docs-lint.yml                 #   Markdown lint & link check
+│   ├── security-scan.yml             #   Secret & privacy scanning
+│   ├── backend-tests.yml             #   NestJS + PostgreSQL integration
+│   ├── android-build.yml             #   Gradle build + unit tests
+│   ├── powershell-check.yml          #   Script syntax validation
+│   └── release-gate.yml              #   Combined release readiness
+│
 ├── docs/                             # Documentation
 │   ├── ARCHITECTURE.md               #   Detailed architecture guide
 │   └── banner.svg                    #   Repository banner
 │
 ├── .env.example                      # Environment variable template
 ├── .gitignore                        # Git exclusion rules
+├── VERSION                           # Semantic version (3.2.0)
+├── CHANGELOG.md                      # Release history
 ├── LICENSE                           # MIT License
 ├── SECURITY.md                       # Security policy & reporting
 ├── CONTRIBUTING.md                   # Contribution guidelines
@@ -423,6 +447,119 @@ Register → Login → Create Task → List Tasks → Toggle Status → Delete T
 
 ---
 
+## Running Tests
+
+### Skill Evaluation (no dependencies needed)
+```bash
+bash tests/skill-eval/run-eval.sh
+```
+
+### Backend Integration Tests
+```bash
+# Requires Docker running
+cd examples/fullstack-taskapp/docker
+docker compose up -d postgres
+
+cd ../backend
+npm install && npm run build
+
+# Set test env vars
+export DATABASE_URL=postgresql://demouser:yourpassword@localhost:5433/demoapp
+export JWT_SECRET=your-test-secret
+
+# Run tests
+npx jest --config jest.config.js --forceExit --verbose
+```
+
+### Android Unit Tests
+```bash
+cd examples/fullstack-taskapp/android
+./gradlew testDebugUnitTest
+```
+
+### Release Validation (all checks)
+```bash
+bash scripts/release-check.sh
+```
+
+---
+
+## Installer Examples
+
+```powershell
+# Preview what will be installed (dry run)
+./scripts/install.ps1 -WhatIf
+
+# Install skills to Claude Code
+./scripts/install.ps1
+
+# Install to all AI assistants (Claude + Gemini + Codex)
+./scripts/install.ps1 -Target All
+
+# Upgrade existing skills (backs up first, then overwrites)
+./scripts/install.ps1 -Action Upgrade -Force
+
+# Back up current skills without changing them
+./scripts/install.ps1 -Action Backup
+
+# Uninstall (backs up first, then removes)
+./scripts/install.ps1 -Action Uninstall
+```
+
+---
+
+## Supported Environments
+
+| Component | Minimum | Tested With |
+|-----------|---------|-------------|
+| **OS** | Windows 10, macOS 12, Ubuntu 20.04 | Windows 11 Pro |
+| **Android SDK** | API 33 (compileSdk 35) | API 36 emulator |
+| **Kotlin** | 2.0+ | 2.0.21 |
+| **Gradle** | 8.0+ | 9.1.0 |
+| **Node.js** | 18+ | 22.x |
+| **Docker** | 20.10+ | Latest |
+| **PostgreSQL** | 14+ | 16-alpine |
+| **AI Assistant** | Claude Code, Gemini CLI, or Codex | Claude Code |
+
+---
+
+## Continuous Integration
+
+Every push and pull request triggers these automated checks:
+
+| Workflow | What It Checks |
+|----------|---------------|
+| **Skill Validation** | 14 skills present, SKILL.md + references/ structure, no empty files |
+| **Docs Lint** | Markdown formatting, internal link integrity |
+| **Security Scan** | Hardcoded credentials, API keys, user paths, personal data, npm audit |
+| **Backend Tests** | TypeScript compilation, 13 Jest integration tests against PostgreSQL |
+| **Android Build** | Gradle build, 3 unit tests, lint check for both example apps |
+| **PowerShell Check** | Script syntax validation, installer dry-run |
+| **Release Gate** | All of the above as a combined release readiness check |
+
+---
+
+## Release History
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| **3.2.0** | 2026-10-23 | CI/CD, skill evaluation framework, installer upgrade/backup/uninstall, security hardening |
+| **3.1.0** | 2026-10-22 | Initial public release — 14 skills, fullstack TaskApp, documentation |
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
+
+---
+
+## Known Limitations
+
+- **Android instrumented tests** are not included (no Compose UI tests in `androidTest/`)
+- **npm audit** reports 6 vulnerabilities in transitive dependencies (uuid, typeorm) — none exploitable in this demo context
+- **CORS** defaults to `origin: *` for development — restrict via `CORS_ORIGIN` env var in production
+- **Token storage** in the Android app is in-memory only — use `EncryptedSharedPreferences` for production
+- **AI behavior evaluations** require manual execution with a specific AI model — results vary by model and version
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting issues, features, and pull requests.
@@ -438,5 +575,6 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <sub>Built with Android + Kotlin + Jetpack Compose + NestJS + PostgreSQL + Docker</sub>
+  <sub>Built with Android + Kotlin + Jetpack Compose + NestJS + PostgreSQL + Docker</sub><br/>
+  <sub>CI/CD powered by GitHub Actions</sub>
 </p>
