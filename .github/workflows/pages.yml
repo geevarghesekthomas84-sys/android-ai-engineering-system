@@ -32,20 +32,18 @@ jobs:
         with:
           enablement: true
 
-      - name: Build site
+      - name: Prepare source
         run: |
-          mkdir -p _site
-          cp README.md _site/index.md
-          cp CHANGELOG.md _site/changelog.md
-          cp CONTRIBUTING.md _site/contributing.md
-          cp SECURITY.md _site/security.md
-          cp -r docs/ _site/docs/ 2>/dev/null || true
+          cp README.md index.md
+          cp CHANGELOG.md changelog.md
+          cp CONTRIBUTING.md contributing.md
+          cp SECURITY.md security.md
 
-          cat > _site/_config.yml << 'YAML'
-          title: Android AI Engineering System
-          description: 14 specialized AI engineering skills for professional Android development
-          theme: jekyll-theme-cayman
-          YAML
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

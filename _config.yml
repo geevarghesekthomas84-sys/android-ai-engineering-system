@@ -1,0 +1,9 @@
+title: Android AI Engineering System
+description: 14 specialized AI engineering skills for professional Android development
+theme: jekyll-theme-cayman
+exclude:
+  - node_modules
+  - examples/fullstack-taskapp/backend/node_modules
+  - "*.jar"
+  - "*.apk"
+  - "*.aab"
