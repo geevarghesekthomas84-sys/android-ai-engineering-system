@@ -3,6 +3,7 @@ name: Security & Privacy Scan
 on:
   push:
   pull_request:
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -19,7 +20,9 @@ jobs:
         run: |
           ERRORS=0
           echo "--- Checking for hardcoded passwords ---"
-          PASSWORDS=$(grep -rn 'demopass123\|dev-secret-change-me' --include='*.ts' --include='*.kt' --include='*.yml' --include='*.yaml' --include='*.json' --include='*.ps1' . || true)
+          PASSWORDS=$(grep -rn 'demopass123\|dev-secret-change-me' \
+            --include='*.ts' --include='*.kt' --include='*.ps1' \
+            skills/ scripts/ examples/ || true)
           if [ -n "$PASSWORDS" ]; then
             echo "::error::Hardcoded credentials found:"
             echo "$PASSWORDS"
@@ -27,7 +30,9 @@ jobs:
           fi
 
           echo "--- Checking for API key patterns ---"
-          KEYS=$(grep -rn 'sk-[a-zA-Z0-9]\{20,\}\|AIza[a-zA-Z0-9_-]\{35\}\|ghp_[a-zA-Z0-9]\{36\}\|AKIA[0-9A-Z]\{16\}\|gho_[a-zA-Z0-9]\{36\}' . || true)
+          KEYS=$(grep -rn 'sk-[a-zA-Z0-9]\{20,\}\|AIza[a-zA-Z0-9_-]\{35\}\|ghp_[a-zA-Z0-9]\{36\}\|AKIA[0-9A-Z]\{16\}\|gho_[a-zA-Z0-9]\{36\}' \
+            --include='*.ts' --include='*.kt' --include='*.ps1' --include='*.json' --include='*.yml' \
+            skills/ scripts/ examples/ || true)
           if [ -n "$KEYS" ]; then
             echo "::error::Potential API keys found:"
             echo "$KEYS"
@@ -49,7 +54,10 @@ jobs:
         run: |
           ERRORS=0
           echo "--- Checking for Windows user paths ---"
-          PATHS=$(grep -rn 'C:\\Users\\' --include='*.md' --include='*.ts' --include='*.kt' --include='*.yml' --include='*.ps1' --include='*.json' . || true)
+          PATHS=$(grep -rn 'C:\\Users\\' \
+            --include='*.md' --include='*.ts' --include='*.kt' \
+            --include='*.yml' --include='*.ps1' --include='*.json' \
+            skills/ scripts/ examples/ docs/ README.md CONTRIBUTING.md SECURITY.md || true)
           if [ -n "$PATHS" ]; then
             echo "::error::Hardcoded Windows paths found:"
             echo "$PATHS"
@@ -57,7 +65,9 @@ jobs:
           fi
 
           echo "--- Checking for machine identifiers ---"
-          MACHINES=$(grep -rn 'DESKTOP-\|LAPTOP-\|WORKSTATION-' . --include='*.md' --include='*.ts' --include='*.yml' --include='*.ps1' || true)
+          MACHINES=$(grep -rn 'DESKTOP-\|LAPTOP-\|WORKSTATION-' \
+            --include='*.md' --include='*.ts' --include='*.yml' --include='*.ps1' \
+            skills/ scripts/ examples/ docs/ README.md CONTRIBUTING.md SECURITY.md || true)
           if [ -n "$MACHINES" ]; then
             echo "::error::Machine identifiers found:"
             echo "$MACHINES"
@@ -95,9 +105,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: examples/fullstack-taskapp/backend/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Audit dependencies
         run: npm audit --audit-level=critical || true

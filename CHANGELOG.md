@@ -4,6 +4,16 @@ All notable changes to the Android AI Engineering System are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [3.2.1] - 2026-10-23
+
+### Fixed
+- **PowerShell CI**: Pre-declare `$tokens` and `$parseErrors` variables before `[ref]` — fixes `[ref] cannot be applied to a variable that does not exist` on pwsh/Linux
+- **Security scan**: Scope credential grep to `skills/`, `scripts/`, `examples/` directories — eliminates false positives from workflow and test files matching their own patterns
+- **Backend CI**: Upgrade `@nestjs/swagger` from `^8.0.0` to `^11.0.0` to resolve peer-dependency conflict with `@nestjs/common@^11`
+- **Backend CI**: Generate and commit `package-lock.json` — fixes `cache-dependency-path` resolution failure
+- **Backend CI**: Switch `npm install` to `npm ci` for reproducible builds
+- **All workflows**: Add `workflow_call` trigger so the release gate can invoke each workflow as a reusable workflow
+
 ## [3.2.0] - 2026-10-23
 
 ### Added

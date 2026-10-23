@@ -5,6 +5,7 @@ on:
     paths: ['**/*.md', 'docs/**']
   pull_request:
     paths: ['**/*.md', 'docs/**']
+  workflow_call:
   workflow_dispatch:
 
 permissions:

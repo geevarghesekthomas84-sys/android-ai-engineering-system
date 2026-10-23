@@ -2,9 +2,10 @@ name: Skill Structure Validation
 
 on:
   push:
-    paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
+    paths: ['skills/**', 'scripts/validate-v3-skills.ps1', '.github/workflows/skills-validation.yml']
   pull_request:
-    paths: ['skills/**', 'scripts/validate-v3-skills.ps1']
+    paths: ['skills/**', 'scripts/validate-v3-skills.ps1', '.github/workflows/skills-validation.yml']
+  workflow_call:
   workflow_dispatch:
 
 permissions:

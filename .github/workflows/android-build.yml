@@ -2,9 +2,10 @@ name: Android Build & Tests
 
 on:
   push:
-    paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**']
+    paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**', '.github/workflows/android-build.yml']
   pull_request:
-    paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**']
+    paths: ['examples/fullstack-taskapp/android/**', 'examples/android-skilltest/**', '.github/workflows/android-build.yml']
+  workflow_call:
   workflow_dispatch:
 
 permissions:
