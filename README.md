@@ -4,12 +4,15 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"/></a>
-  <img src="https://img.shields.io/badge/Version-3.2-blue.svg" alt="Version 3.2"/>
+  <img src="https://img.shields.io/badge/Version-3.2.1-blue.svg" alt="Version 3.2.1"/>
   <img src="https://img.shields.io/badge/Skills-14-orange.svg" alt="14 Skills"/>
   <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/skills-validation.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/skills-validation.yml/badge.svg" alt="Skill Validation"/></a>
   <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/security-scan.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/security-scan.yml/badge.svg" alt="Security Scan"/></a>
   <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/backend-tests.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/backend-tests.yml/badge.svg" alt="Backend Tests"/></a>
   <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/android-build.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/android-build.yml/badge.svg" alt="Android Build"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/powershell-check.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/powershell-check.yml/badge.svg" alt="PowerShell Check"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/docs-lint.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/docs-lint.yml/badge.svg" alt="Docs Lint"/></a>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/release-gate.yml"><img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/release-gate.yml/badge.svg" alt="Release Gate"/></a>
 </p>
 
 <p align="center">
