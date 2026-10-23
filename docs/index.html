@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Android AI Engineering System</title>
+<meta name="description" content="14 specialized AI engineering skills for professional Android development">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2333;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--green:#3DDC84;--blue:#58a6ff;--purple:#bc8cff;--orange:#f0883e;--red:#f85149;--cyan:#39d2e0;--yellow:#e3b341}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.hero{background:linear-gradient(135deg,#0d1117 0%,#161b22 40%,#1a2332 60%,#0d2137 100%);padding:80px 20px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(61,220,132,0.08) 0%,transparent 60%);pointer-events:none}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;margin-bottom:12px;background:linear-gradient(90deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.15rem;color:var(--text2);max-width:600px;margin:0 auto 24px}
+.hero-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px}
+.hero-badges img{height:22px}
+.btn{display:inline-block;padding:12px 28px;border-radius:8px;font-weight:600;font-size:1rem;transition:all 0.2s}
+.btn-primary{background:var(--green);color:#000}
+.btn-primary:hover{background:#4ae394;text-decoration:none;transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);margin-left:12px}
+.btn-secondary:hover{border-color:var(--text2);text-decoration:none}
+.hero-actions{margin-top:32px}
+
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;padding:40px 20px;max-width:800px;margin:-40px auto 0;position:relative;z-index:1}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:2rem;font-weight:700;color:var(--green)}
+.stat-label{font-size:0.85rem;color:var(--text2);margin-top:4px}
+
+section{padding:60px 20px}
+section h2{font-size:1.8rem;font-weight:700;margin-bottom:8px;text-align:center}
+section .subtitle{text-align:center;color:var(--text2);margin-bottom:40px;font-size:1.05rem}
+
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s,transform 0.2s}
+.skill-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.skill-card h3{font-size:1.05rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.skill-card .domain{font-size:0.75rem;padding:2px 8px;border-radius:99px;font-weight:600;display:inline-block}
+.skill-card p{font-size:0.9rem;color:var(--text2);margin-top:8px}
+.d-core{background:rgba(61,220,132,0.15);color:var(--green)}
+.d-design{background:rgba(57,210,224,0.15);color:var(--cyan)}
+.d-frontend{background:rgba(88,166,255,0.15);color:var(--blue)}
+.d-quality{background:rgba(227,179,65,0.15);color:var(--yellow)}
+.d-perf{background:rgba(240,136,62,0.15);color:var(--orange)}
+.d-backend{background:rgba(188,140,255,0.15);color:var(--purple)}
+.d-data{background:rgba(188,140,255,0.15);color:var(--purple)}
+.d-cloud{background:rgba(88,166,255,0.15);color:var(--blue)}
+.d-security{background:rgba(248,81,73,0.15);color:var(--red)}
+.d-devops{background:rgba(240,136,62,0.15);color:var(--orange)}
+.d-ai{background:rgba(61,220,132,0.15);color:var(--green)}
+.d-arch{background:rgba(57,210,224,0.15);color:var(--cyan)}
+.d-web{background:rgba(88,166,255,0.15);color:var(--blue)}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
+.feature{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px}
+.feature-icon{font-size:1.6rem;margin-bottom:12px}
+.feature h3{font-size:1.1rem;margin-bottom:8px}
+.feature p{font-size:0.9rem;color:var(--text2)}
+
+.tech-stack{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px}
+.tech{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:0.9rem;font-weight:500}
+
+.ci-status{background:var(--surface2);border-radius:16px;padding:32px;margin-top:40px}
+.ci-status h3{font-size:1.2rem;margin-bottom:16px;text-align:center}
+.ci-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.ci-badges img{height:20px}
+
+.cta{text-align:center;padding:80px 20px;background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%)}
+.cta h2{font-size:2rem;margin-bottom:12px}
+.cta p{color:var(--text2);margin-bottom:32px;font-size:1.1rem}
+
+footer{text-align:center;padding:32px 20px;color:var(--text2);font-size:0.85rem;border-top:1px solid var(--border)}
+
+@media(max-width:600px){
+  .hero{padding:48px 16px 40px}
+  .stats{grid-template-columns:repeat(2,1fr);margin-top:-20px}
+  .skills-grid{grid-template-columns:1fr}
+  .hero-actions .btn-secondary{margin-left:0;margin-top:12px}
+  .hero-actions{display:flex;flex-direction:column;align-items:center;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <h1>Android AI Engineering System</h1>
+  <p>14 specialized AI engineering skills that transform your AI assistant into a team of expert Android engineers.</p>
+  <div class="hero-badges">
+    <img src="https://img.shields.io/badge/Version-3.2.1-blue.svg" alt="v3.2.1">
+    <img src="https://img.shields.io/badge/Skills-14-orange.svg" alt="14 Skills">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT">
+    <img src="https://img.shields.io/badge/CI-12%2F12%20passing-brightgreen.svg" alt="CI passing">
+  </div>
+  <div class="hero-actions">
+    <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system" class="btn btn-primary">View on GitHub</a>
+    <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/releases/tag/v3.2.1" class="btn btn-secondary">Download v3.2.1</a>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats">
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">AI Skills</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">CI Workflows</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Checks Passing</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">AI Platforms</div></div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <h2>Key Features</h2>
+    <p class="subtitle">Everything you need for AI-powered Android development</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">&#x1F3AF;</div>
+        <h3>Domain-Specific Expertise</h3>
+        <p>14 skills covering UI/UX, frontend, backend, security, testing, DevOps, AI integration, and more. Each with deep reference docs and decision frameworks.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F4F1;</div>
+        <h3>Full-Stack Examples</h3>
+        <p>Working TaskApp with Android (Kotlin + Compose) + NestJS backend + PostgreSQL. Verified end-to-end CRUD cycle with JWT authentication.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F6E1;&#xFE0F;</div>
+        <h3>Security-First</h3>
+        <p>OWASP MASVS compliance, secret scanning, privacy validation. Zero hardcoded credentials. All secrets externalized to environment variables.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x2699;&#xFE0F;</div>
+        <h3>CI/CD Pipeline</h3>
+        <p>7 automated GitHub Actions workflows: skill validation, docs lint, security scan, backend tests with PostgreSQL, Android build, PowerShell check, release gate.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F680;</div>
+        <h3>Multi-Platform</h3>
+        <p>One installer deploys skills to Claude Code, Google Gemini, or OpenAI Codex. PowerShell automation with Install, Upgrade, Backup, and Uninstall actions.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">&#x1F9EA;</div>
+        <h3>Skill Evaluation</h3>
+        <p>13 deterministic checks + 5 AI behavior evaluations. Automated test runner validates structure, content, privacy, and command safety.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--surface2)">
+  <div class="container">
+    <h2>Skill Catalog</h2>
+    <p class="subtitle">Each skill transforms your AI into a specialized engineer</p>
+    <div class="skills-grid">
+      <div class="skill-card"><h3>android-cli <span class="domain d-core">Core</span></h3><p>ADB, emulator management, Gradle builds, device inspection. The central orchestrator for all Android development tasks.</p></div>
+      <div class="skill-card"><h3>android-ui-ux-design <span class="domain d-design">Design</span></h3><p>Material 3, Compose layouts, accessibility, theming, motion and animation design patterns.</p></div>
+      <div class="skill-card"><h3>android-frontend-engineer <span class="domain d-frontend">Frontend</span></h3><p>MVVM architecture, state management, Navigation3, Hilt dependency injection, coroutines and networking.</p></div>
+      <div class="skill-card"><h3>android-testing-engineer <span class="domain d-quality">Quality</span></h3><p>JUnit, Espresso, UI Automator, Compose testing, screenshot tests, and CI integration.</p></div>
+      <div class="skill-card"><h3>app-performance-engineer <span class="domain d-perf">Performance</span></h3><p>Profiling, startup optimization, memory management, APK size reduction, and benchmarks.</p></div>
+      <div class="skill-card"><h3>backend-api-engineer <span class="domain d-backend">Backend</span></h3><p>NestJS, FastAPI, REST/GraphQL APIs, JWT authentication, database patterns, and Docker.</p></div>
+      <div class="skill-card"><h3>database-offline-sync <span class="domain d-data">Data</span></h3><p>Room, offline-first architecture, sync strategies, migrations, caching, and DataStore.</p></div>
+      <div class="skill-card"><h3>firebase-supabase-engineer <span class="domain d-cloud">Cloud</span></h3><p>Firebase Auth, Firestore, Supabase, cloud functions, push notifications, and real-time data.</p></div>
+      <div class="skill-card"><h3>android-security-engineer <span class="domain d-security">Security</span></h3><p>OWASP MASVS, secure storage, network security, auth hardening, code obfuscation, and threat modeling.</p></div>
+      <div class="skill-card"><h3>android-security-lab-builder <span class="domain d-security">Security</span></h3><p>Build intentionally vulnerable apps, CTF challenges, and hands-on security training labs.</p></div>
+      <div class="skill-card"><h3>devops-release-engineer <span class="domain d-devops">DevOps</span></h3><p>GitHub Actions CI/CD, APK/AAB signing, versioning, rollback strategies, and monitoring.</p></div>
+      <div class="skill-card"><h3>ai-integration-engineer <span class="domain d-ai">AI/ML</span></h3><p>Claude, GPT, and Gemini API integration, on-device ML, RAG, streaming, and cost optimization.</p></div>
+      <div class="skill-card"><h3>app-product-architect <span class="domain d-arch">Architecture</span></h3><p>System design, API contracts, data modeling, tech stack selection, and scalability planning.</p></div>
+      <div class="skill-card"><h3>fullstack-web-engineer <span class="domain d-web">Web</span></h3><p>Next.js, React, Tailwind CSS, web auth, deployment. The web companion to your mobile app.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Tech Stack</h2>
+    <p class="subtitle">Production-grade tools and frameworks</p>
+    <div class="tech-stack">
+      <div class="tech">Kotlin 2.0</div>
+      <div class="tech">Jetpack Compose</div>
+      <div class="tech">Material 3</div>
+      <div class="tech">NestJS</div>
+      <div class="tech">TypeScript</div>
+      <div class="tech">PostgreSQL</div>
+      <div class="tech">Docker</div>
+      <div class="tech">GitHub Actions</div>
+      <div class="tech">PowerShell 7</div>
+      <div class="tech">Gradle 8</div>
+      <div class="tech">JUnit 5</div>
+      <div class="tech">Espresso</div>
+    </div>
+
+    <div class="ci-status">
+      <h3>CI/CD Status</h3>
+      <div class="ci-badges">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/skills-validation.yml/badge.svg" alt="Skills">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/security-scan.yml/badge.svg" alt="Security">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/backend-tests.yml/badge.svg" alt="Backend">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/android-build.yml/badge.svg" alt="Android">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/powershell-check.yml/badge.svg" alt="PowerShell">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/docs-lint.yml/badge.svg" alt="Docs">
+        <img src="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system/actions/workflows/release-gate.yml/badge.svg" alt="Release Gate">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Get Started</h2>
+  <p>Install all 14 skills with a single command</p>
+  <code style="display:block;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px 24px;font-size:1.05rem;max-width:500px;margin:0 auto 32px;color:var(--green)">pwsh scripts/install.ps1 -Target Claude</code>
+  <a href="https://github.com/geevarghesekthomas84-sys/android-ai-engineering-system" class="btn btn-primary">View on GitHub</a>
+</section>
+
+<footer>
+  <p>Android AI Engineering System v3.2.1 &middot; MIT License &middot; Built with AI-powered engineering</p>
+</footer>
+
+</body>
+</html>

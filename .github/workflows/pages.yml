@@ -33,18 +33,11 @@ jobs:
         with:
           enablement: true
 
-      - name: Prepare source
+      - name: Prepare site
         run: |
-          cp README.md index.md
-          cp CHANGELOG.md changelog.md
-          cp CONTRIBUTING.md contributing.md
-          cp SECURITY.md security.md
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
+          mkdir -p _site
+          cp docs/index.html _site/index.html
+          cp -r docs/ _site/docs/ 2>/dev/null || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
